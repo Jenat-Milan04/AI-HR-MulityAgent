@@ -114,10 +114,19 @@ pip install -r requirements.txt
 ### 2. Configure Environment
 
 ```bash
-# Default: mock mode (no API key needed)
-cp .env .env.local
-# To use OpenAI: set MODEL_PROVIDER=openai and add OPENAI_API_KEY
+# Copy the example environment file
+cp .env.example .env
+
+# Edit .env file and add your API keys:
+# - For OpenAI: Get API key from https://platform.openai.com/account/api-keys
+# - For Ollama: Ensure Ollama is running locally
+# - For Mock: No configuration needed (default)
 ```
+
+**⚠️ IMPORTANT SECURITY NOTE:**
+- Never commit your `.env` file to version control
+- The `.env` file contains sensitive API keys
+- Always use `.env.example` as a template
 
 ### 3. Start the Server
 
