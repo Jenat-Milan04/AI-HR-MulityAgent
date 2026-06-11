@@ -1,0 +1,10 @@
+[33mb7c54a4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m task completed successfully
+[33maed0197[m added new api key and removed the od ollama llm
+[33mbce02fc[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Update README with security instructions
+[33mac6dbe2[m SECURITY FIX: Remove .env file and add proper gitignore
+[33m92c7ad3[m Final cleanup: Add remaining cache and configuration files
+[33m1ff49b6[m Add utility scripts for testing and validation
+[33m3c835fc[m Add interactive web frontend
+[33m837ca94[m Add comprehensive test suite with pytest
+[33m1262ceb[m Add FastAPI application with lifecycle management
+[33m4ee0230[m Add FastAPI REST endpoints with Pydantic validation

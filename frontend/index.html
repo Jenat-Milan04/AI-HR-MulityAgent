@@ -81,6 +81,28 @@
             width: 150px;
             margin-right: 10px;
         }
+        .typing {
+            font-style: italic;
+            color: #6b7280;
+        }
+
+        .dot {
+            animation: blink 1.4s infinite both;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.2; }
+            20% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
     </style>
 </head>
 <body>
@@ -148,31 +170,49 @@
             sendButton.textContent = 'Sending...';
             
             try {
-                const response = await fetch(`${API_BASE}/request`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        user_id: userId,
-                        message: message
-                    })
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
+
+                    // 🟡 SHOW TYPING FIRST
+                    showTyping();
+
+                    const response = await fetch(`${API_BASE}/request`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user_id: userId,
+                            message: message
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    // 🔴 REMOVE TYPING
+                    const typing = document.getElementById('typingIndicator');
+                    if (typing) typing.remove();
+
+                    // 🟢 SHOW RESPONSE
+                    const status = `Intent: ${data.intent} | Confidence: ${(data.confidence * 100).toFixed(0)}% | Agent: ${data.agent}`;
+                    addMessage(data.response, false, status);
+
+                } catch (error) {
+
+                    console.error('Error:', error);
+
+                    // 🔴 REMOVE TYPING ALSO HERE
+                    const typing = document.getElementById('typingIndicator');
+                    if (typing) typing.remove();
+
+                    addMessage(
+                        'Sorry, I encountered an error. Please make sure the backend server is running on port 8000.',
+                        false,
+                        'Error'
+                    );
                 }
-                
-                const data = await response.json();
-                
-                // Add bot response
-                const status = `Intent: ${data.intent} | Confidence: ${(data.confidence * 100).toFixed(0)}% | Agent: ${data.agent}`;
-                addMessage(data.response, false, status);
-                
-            } catch (error) {
-                console.error('Error:', error);
-                addMessage('Sorry, I encountered an error. Please make sure the backend server is running on port 8000.', false, 'Error');
-            }
             
             // Re-enable button
             sendButton.disabled = false;
@@ -184,6 +224,25 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('messageInput').focus();
         });
+        function showTyping() {
+            const chatArea = document.getElementById('chatArea');
+
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot';
+            typingDiv.id = 'typingIndicator';
+
+            typingDiv.innerHTML = `
+                <div class="typing">
+                    HR Agent is typing
+                    <span class="dot">.</span>
+                    <span class="dot">.</span>
+                    <span class="dot">.</span>
+                </div>
+            `;
+
+            chatArea.appendChild(typingDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
     </script>
 </body>
 </html>

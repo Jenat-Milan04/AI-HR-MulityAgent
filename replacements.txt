@@ -1,0 +1,1 @@
+﻿REGEX:AIza[0-9A-Za-z_-]{35}==>YOUR_API_KEY_HERE
