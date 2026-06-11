@@ -3,7 +3,7 @@
 ## Your Gemini API Key
 **For your local setup, use this API key:**
 ```
-AQ.Ab8RN6ImQZ7btT_J_fVAiU16Y1To18_yRx_sOtP-SEbcUZv-2g
+your_gemini_api_key_here
 ```
 
 ## Setup Instructions
@@ -14,7 +14,7 @@ AQ.Ab8RN6ImQZ7btT_J_fVAiU16Y1To18_yRx_sOtP-SEbcUZv-2g
 ## Example .env file
 ```
 MODEL_PROVIDER=gemini
-GEMINI_API_KEY=AQ.Ab8RN6ImQZ7btT_J_fVAiU16Y1To18_yRx_sOtP-SEbcUZv-2g
+GEMINI_API_KEY=your_gemini_api_key_here
 MODEL_NAME=gemini-1.5-flash
 DB_PATH=./hr_agent.db
 STM_MAX_ENTRIES=10
