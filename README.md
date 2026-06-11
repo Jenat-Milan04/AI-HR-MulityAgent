@@ -32,8 +32,7 @@ User Request (POST /request)
 ┌─────────────────────────────────────────┐
 │            LLM Provider Layer           │
 │                                         │
-│   MockProvider  │  OpenAIProvider       │
-│                 │  OllamaProvider       │
+│   MockProvider  │  GeminiProvider       │
 └─────────────────────────────────────────┘
         │
         ▼
@@ -44,10 +43,25 @@ SQLite Database (memory + audit_logs)
 
 ## LLM Provider System
 
-The system supports **three interchangeable backends** selected via `MODEL_PROVIDER` in `.env`.
+**For assignment submission, using Google Gemini API.**
+
+The system supports **two backends** selected via `MODEL_PROVIDER` in `.env`.
 No agent code changes are needed to switch providers.
 
-### Mock Mode (default)
+### Google Gemini Mode (PRIMARY FOR ASSIGNMENT)
+
+```
+MODEL_PROVIDER=gemini
+GEMINI_API_KEY=your_actual_gemini_api_key_here
+MODEL_NAME=gemini-1.5-flash
+```
+
+- Real AI-generated responses via Google Gemini API
+- Professional HR assistant behavior
+- Fast, cost-effective, and reliable
+- Get your API key from: https://aistudio.google.com/app/apikey
+
+### Mock Mode (testing only)
 
 ```
 MODEL_PROVIDER=mock
@@ -56,28 +70,7 @@ MODEL_PROVIDER=mock
 - Zero cost — no API key required
 - Fully deterministic — ideal for CI, automated tests, and local demos
 - Keyword-based responses that cover all HR domains
-
-### OpenAI Mode
-
-```
-MODEL_PROVIDER=openai
-OPENAI_API_KEY=sk-...
-MODEL_NAME=gpt-4o-mini
-```
-
-- Real AI-generated responses via OpenAI Chat Completions
-- Requires a valid `OPENAI_API_KEY`
-
-### Ollama Mode (local open-source LLM)
-
-```
-MODEL_PROVIDER=ollama
-MODEL_NAME=llama3
-OLLAMA_BASE_URL=http://localhost:11434
-```
-
-- Uses any model you have pulled locally via [Ollama](https://ollama.com)
-- No API key, no external calls — fully air-gapped
+- **Use only for development/testing, not for assignment submission**
 
 ### Provider Architecture
 
@@ -93,8 +86,7 @@ Agent (Leave / Scheduling / Compliance / Clarification)
   └──▶ get_llm_provider()
             │
             ├──▶ MockLLMProvider
-            ├──▶ OpenAIProvider
-            └──▶ OllamaProvider
+            └──▶ GeminiProvider
 ```
 
 Agents call `provider.generate(message, context)` — they are fully decoupled
@@ -117,10 +109,16 @@ pip install -r requirements.txt
 # Copy the example environment file
 cp .env.example .env
 
+<<<<<<< HEAD
 # Edit .env file and add your API keys:
 # - For OpenAI: Get API key from https://platform.openai.com/account/api-keys
 # - For Ollama: Ensure Ollama is running locally
 # - For Mock: No configuration needed (default)
+=======
+# Edit .env file and add your Gemini API key:
+# Replace "your_gemini_api_key_here" with your actual key
+# Get your API key from: https://aistudio.google.com/app/apikey
+>>>>>>> 8e7909a (added new api key and removed the od ollama llm)
 ```
 
 **⚠️ IMPORTANT SECURITY NOTE:**
@@ -180,6 +178,7 @@ curl "http://localhost:8000/audit?user_id=emp_001&limit=5"
 
 ```bash
 curl http://localhost:8000/memory/emp_001
+curl http://localhost:8000/memory/emp_002
 ```
 
 ---
